@@ -12,6 +12,10 @@ public class OldController implements Controller {
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("OldController.handleRequest");
-        return null;
+        return new ModelAndView("new-form");
     }
 }
+/**
+ * 1. 빈의 이름으로 controller(handler) 찾음
+ * 2. SimpleControllerHandlerAdapter -> Controller interface 지원
+ */
