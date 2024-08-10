@@ -1,31 +1,28 @@
-package hello.servlet.web.springmvc.old.v1;
+package hello.servlet.web.springmvc.v2;
 
 import hello.servlet.domain.member.Member;
 import hello.servlet.domain.member.MemberRepository;
-import hello.servlet.web.frontcontroller.ModelView;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
+import java.util.List;
 
 @Controller
-public class SpringMemberSaveControllerV1 {
+@RequestMapping("/springmvc/v2/members") // 겹치는 url 생략 가능
+public class SpringMemberControllerV2 {
 
     private MemberRepository memberRepository = MemberRepository.getInstance();
 
-    @RequestMapping("/springmvc/v1/members/save")
-    public ModelAndView process(HttpServletRequest request, HttpServletResponse response) {
-        /** <이 메소드는 누가 호출해주나..?>
-         * @RequestMapping : 요청 정보를 매핑한다. 해당 URL이 호출되면 이 메서드가 호출된다. 애노테이션을 기반
-         * 으로 동작하기 때문에, 메서드의 이름은 임의로 지으면 된다.
-          */
+    @RequestMapping("/new-form")
+    public ModelAndView newForm() {// 메소드 이름은 자유
+        return new ModelAndView("new-form");
+    }
 
-        //String username = paramMap.get("username");
-        //int age = Integer.parseInt(paramMap.get("age"));
+    @RequestMapping("/save")
+    public ModelAndView save(HttpServletRequest request, HttpServletResponse response) {
 
         String username = request.getParameter("username");
         int age = Integer.parseInt(request.getParameter("age"));
@@ -39,4 +36,13 @@ public class SpringMemberSaveControllerV1 {
         return mv;
     }
 
+    @RequestMapping
+    public ModelAndView members() {
+        List<Member> members = memberRepository.findAll();
+        ModelAndView mv = new ModelAndView("members");
+        //mv.getModel().put("members", members)
+        mv.addObject("members", members);
+
+        return mv;
+    }
 }
